@@ -3,7 +3,7 @@
 
 import os
 from utils import *
-import re
+import regex as re
 import argparse
 import json
 import logging
@@ -447,7 +447,6 @@ if __name__=='__main__':
             raise FileNotFoundError('Target filepath does not exist')
         
     json_file = read_maintext_json(filepath)    
-    print(list(json_file.values()))
     paragraphs = list(json_file.values())[1]
     
     whole_dict = {}
@@ -459,7 +458,7 @@ if __name__=='__main__':
         
     
     output_path = os.path.join(target_dir, os.path.basename(filepath).strip('json') + '_IAO' + '.json')
-    with open(output_path,'w', encoding='utf8') as f7:
+    with open(output_path,'w', encoding='utf-8') as f7:
         json.dump(whole_dict,f7,indent=1,ensure_ascii=False)
     # write_path = input("Please advise the folder where abbreviation json will be write:")
     # with open('D:/imperial college/project2/HPC/home/scripts/test_abbreviation.json','w', encoding='utf8') as f7:
