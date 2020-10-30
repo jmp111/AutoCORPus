@@ -23,29 +23,29 @@ if __name__ == "__main__":
             config = os.path.join(config_dir,config)
             # extract table
             target_path = os.path.join(target_dir,'tables',os.path.basename(config).strip('.json'))
-            command = "python ./extract_table.py -f '{}' -t '{}' -c '{}'".format(file,target_path,config)
+            command = "python ./extract_table.py -f " + file + " -t " + target_path + " -c " + config
             os.system(command)
 
             # extract maintext
             target_path = os.path.join(target_dir,'maintext',os.path.basename(config).strip('.json'))
-            command = "python ./extract_maintext.py -f '{}' -t '{}' -c '{}'".format(file,target_path,config)
+            command = "python ./extract_maintext.py -f " + file + " -t " + target_path + " -c " + config
             os.system(command)
 
             # extract abbreviations
             maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).strip('.html') + '_maintext.json')
             target_path = os.path.join(target_dir,'abbreviations',os.path.basename(config).strip('.json'))
-            command = "python ./extract_abbreviations.py -f '{}' -t '{}' ".format(maintext_json_path,target_path)
+            command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + target_path
             os.system(command)
     else:
         # extract table
-        command = "python ./extract_table.py -f '{}' -t '{}' -c '{}'".format(file,os.path.join(target_dir,'tables'),config)
+        command = "python ./extract_table.py -f " + file + " -t " + os.path.join(target_dir,'tables') + " -c " + config
         os.system(command)
 
         # extract maintext
-        command = "python ./extract_maintext.py -f '{}' -t '{}' -c '{}'".format(file,os.path.join(target_dir,'maintext'),config)
+        command = "python ./extract_maintext.py -f " + file + " -t " + os.path.join(target_dir,'maintext') + " -c " + config
         os.system(command)
 
         maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).strip('.html') + '_maintext.json')
         # extract abbreviations
-        command = "python ./extract_abbreviations.py -f '{}' -t '{}' ".format(maintext_json_path,os.path.join(target_dir,'abbreviations'))
+        command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + os.path.join(target_dir,'abbreviations')
         os.system(command)
