@@ -459,7 +459,7 @@ if __name__ == "__main__":
             raise FileNotFoundError('Target filepath does not exist')
 
     if filepath:
-        with open(filepath,'r') as f:
+        with open(filepath,'r',encoding='UTF-8') as f:
             text = f.read()
         soup = BeautifulSoup(text, 'html.parser')
         try:
@@ -483,6 +483,6 @@ if __name__ == "__main__":
     output.update(table_dict)
 
     target_filepath = os.path.join(target_dir,'{}.json'.format(os.path.split(filepath)[1].strip('.html')))
-    with open(target_filepath,'w') as f:
+    with open(target_filepath,'w',encoding='UTF-8') as f:
         json.dump(output,f,ensure_ascii=False)
     
