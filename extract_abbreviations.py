@@ -454,5 +454,5 @@ if __name__=='__main__':
         whole_dict.update(pairs)        
     
     output_path = os.path.join(target_dir, os.path.basename(filepath).strip('json') + '_IAO' + '.json')
-    with open(output_path,'w', encoding='utf-8') as f:
+    with open(output_path,'w', encoding='UTF-8') as f:
         json.dump(whole_dict,f,indent=1,ensure_ascii=False)
