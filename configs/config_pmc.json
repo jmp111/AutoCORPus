@@ -2,32 +2,32 @@
     "title":
     {
         "name":"h1",
-        "attrs":{"class":"c-article-title"}
+        "attrs":{"class":["content-title"]}
     },
     "heading":
     {
         "name":"h2",
-        "attrs":{"class":"c-article-section__title"}
+        "attrs":{"class":"head"}
     },
     "heading2":
     {
         "name":"h3",
-        "attrs":{"class":"c-article__sub-heading"}
+        "attrs":{"class":null}
     },
     "body":
     {
         "name":"p",
-        "attrs":{"class":null}
+        "attrs":{"class":"p"}
     },
     "table":
     {
         "name":"table",
-        "attrs":{"class":null}
+        "attrs":{"class":"default_table"}
     },
     "table_caption":
     {
-        "name":"div",
-        "attrs":{"class":"table-wrap-title"}
+        "name":"h3",
+        "attrs":{"class":null}
     },
     "table_footer":
     {
@@ -58,5 +58,10 @@
     {
         "name":"td",
         "attrs":{"class":null}
+    },
+    "abbreviations_table":
+    {
+        "name":"table",
+        "attrs":{"class":"glossary"}
     }
 }

@@ -2,27 +2,27 @@
     "title":
     {
         "name":"h1",
-        "attrs":{"class":["content-title"]}
+        "attrs":{"class":"title"}
     },
     "heading":
     {
         "name":"h2",
-        "attrs":{"class":"head"}
+        "attrs":{"class":null}
     },
     "heading2":
     {
-        "name":"h3",
+        "name":"h4",
         "attrs":{"class":null}
     },
     "body":
     {
-        "name":"p",
-        "attrs":{"class":"p"}
+        "name":"div",
+        "attrs":{"class":"html-p"}
     },
     "table":
     {
         "name":"table",
-        "attrs":{"class":"default_table"}
+        "attrs":{"class":"html-array_table"}
     },
     "table_caption":
     {
@@ -58,5 +58,10 @@
     {
         "name":"td",
         "attrs":{"class":null}
+    },
+    "abbreviations_table":
+    {
+        "name":"table",
+        "attrs":{"class":"glossary"}
     }
 }

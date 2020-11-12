@@ -58,5 +58,10 @@
     {
         "name":"td",
         "attrs":{"class":null}
+    },
+    "abbreviations_table":
+    {
+        "name":"table",
+        "attrs":{"class":"glossary"}
     }
 }

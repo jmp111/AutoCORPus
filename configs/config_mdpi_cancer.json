@@ -2,22 +2,22 @@
     "title":
     {
         "name":"h1",
-        "attrs":{"class":"content-title"}
+        "attrs":{"class":"c-article-title"}
     },
     "heading":
     {
         "name":"h2",
-        "attrs":{"class":null}
+        "attrs":{"class":"c-article-section__title"}
     },
     "heading2":
     {
         "name":"h3",
-        "attrs":{"class":null}
+        "attrs":{"class":"c-article__sub-heading"}
     },
     "body":
     {
-        "name":"div",
-        "attrs":{"class":"section-paragraph"}
+        "name":"p",
+        "attrs":{"class":null}
     },
     "table":
     {
@@ -27,12 +27,12 @@
     "table_caption":
     {
         "name":"div",
-        "attrs":{"class":"inline-table__head"}
+        "attrs":{"class":"table-wrap-title"}
     },
     "table_footer":
     {
         "name":"div",
-        "attrs":{"class":"inline-table__tail"}
+        "attrs":{"class":"tblwrap-foot"}
     },
     "table_header":
     {
@@ -58,5 +58,10 @@
     {
         "name":"td",
         "attrs":{"class":null}
+    },
+    "abbreviations_table":
+    {
+        "name":"table",
+        "attrs":{"class":"glossary"}
     }
 }
