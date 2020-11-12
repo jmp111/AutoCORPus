@@ -75,7 +75,7 @@ if __name__=='__main__':
     with open(config_path,'rb') as f:
         config = json.load(f)
 
-    with open(filepath,'r') as f:
+    with open(filepath,'r',encoding='UTF-8') as f:
         text = f.read()
     soup = BeautifulSoup(text, 'html.parser')
 
@@ -90,5 +90,5 @@ if __name__=='__main__':
     result = extract_text(soup,config)
 
     basename = os.path.basename(filepath).strip('.html')
-    with open(os.path.join(target_dir,"{}_maintext.json".format(basename)), "w") as outfile: 
+    with open(os.path.join(target_dir,"{}_maintext.json".format(basename)), "w",encoding='UTF-8') as outfile: 
         json.dump(result, outfile, ensure_ascii=False)

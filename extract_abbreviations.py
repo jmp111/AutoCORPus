@@ -3,7 +3,7 @@
 
 import os
 from utils import *
-import re
+import regex as re
 import argparse
 import json
 import logging
@@ -430,8 +430,6 @@ def extract_abbreviation(main_text):
 
 
 if __name__=='__main__':
-    # alex_maintext_json = 'D:/imperial college/project2/HPC/home/scripts/test.json'
-    # json_file = read_maintext_json(alex_maintext_json)
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--filepath", type=str, help="filepath of of html file to be processed")
     parser.add_argument("-t", "--target_dir", type=str, help="target directory for output")
@@ -447,20 +445,14 @@ if __name__=='__main__':
             raise FileNotFoundError('Target filepath does not exist')
         
     json_file = read_maintext_json(filepath)    
-    print(list(json_file.values()))
     paragraphs = list(json_file.values())[1]
     
     whole_dict = {}
     for paragraph in paragraphs:
         maintext = paragraph['body']
         pairs = extract_abbreviation(maintext)
-        whole_dict.update(pairs)
-    print (whole_dict)
-        
+        whole_dict.update(pairs)        
     
     output_path = os.path.join(target_dir, os.path.basename(filepath).strip('json') + '_IAO' + '.json')
-    with open(output_path,'w', encoding='utf8') as f7:
-        json.dump(whole_dict,f7,indent=1,ensure_ascii=False)
-    # write_path = input("Please advise the folder where abbreviation json will be write:")
-    # with open('D:/imperial college/project2/HPC/home/scripts/test_abbreviation.json','w', encoding='utf8') as f7:
-    #     json.dump(whole_dict,f7,indent=1,ensure_ascii=False)
+    with open(output_path,'w', encoding='UTF-8') as f:
+        json.dump(whole_dict,f,indent=1,ensure_ascii=False)
