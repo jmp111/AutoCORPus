@@ -1,4 +1,4 @@
-import re
+import regex as re
 from bs4 import BeautifulSoup
 import json
 import nltk
@@ -88,7 +88,8 @@ def read_mapping_file():
 
 def read_maintext_json(json_file):
     mapping_dict = read_mapping_file()
-    paragraphs = list(json_file.values())[1]
+    # paragraphs = list(json_file.values())[1]
+    paragraphs = json_file['paragraphs']
     for paragraph in paragraphs:
         section_heading = paragraph['section_heading']
         tokenized_section_heading = nltk.wordpunct_tokenize(section_heading)
@@ -119,7 +120,7 @@ def read_maintext_json(json_file):
         paragraph.update({'IAO_term':mapping_result})
     return json_file
 
-def read_abbreviations(json_file):
+def read_abbreviations_table(json_file):
     abbreviations = json_file['abbreviations']
     if abbreviations=='':
         return {}

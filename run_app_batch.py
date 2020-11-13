@@ -10,12 +10,14 @@ if __name__ == "__main__":
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-c", "--config", type=str, help="filepath for configuration JSON file")
     group.add_argument("-d", "--config_dir", type=str, help="directory of configuration JSON files")
+    # parser.add_argument('-a','--associated_data',type=str, help="directory of associated data")
 
     args = parser.parse_args()
     base_dir = args.base_dir
     target_dir = args.target_dir
     config = args.config
     config_dir = args.config_dir
+    # associated_data = args.associated_data
 
     filelist = get_files(base_dir)
     

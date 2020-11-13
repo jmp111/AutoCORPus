@@ -1,9 +1,11 @@
+import argparse
 import os
 import re
 from itertools import product
 import json
 import xlrd,xlwt
 import openpyxl
+
 
 def check_superrow(row):
     """
@@ -136,6 +138,12 @@ if __name__=='__main__':
     associated_data_dir = args.associated_data_dir
     target_dir = args.target_dir
 
+    if not os.path.isdir(target_dir):
+        try:
+            os.makedirs(target_dir)
+        except:
+            print('Error occured when creating target directory')
+
     files = [os.path.join(associated_data_dir,i) for i in os.listdir(associated_data_dir)]
 
     table_2d = []
@@ -176,5 +184,5 @@ if __name__=='__main__':
     basename = os.path.abspath(associated_data_dir).split('/')[-1]
     filename = '{}_associated_data.json'.format(basename)
     with open(os.path.join(target_dir,filename),'w') as f:
-        json.dump(json_file,f,ensure_ascii=False)
+        json.dump(table_json,f,ensure_ascii=False)
         

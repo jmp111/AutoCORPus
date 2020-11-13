@@ -444,10 +444,10 @@ if __name__=='__main__':
         except:
             raise FileNotFoundError('Target filepath does not exist')
         
-    with open(filepath,'r',encoding='UTF-8',errors='ignore') as maintext_json:
-        json_file=json.load(maintext_json)
-    json_file = read_maintext_json(json_file)    
-    paragraphs = list(json_file.values())[1]
+    with open(filepath,'r',encoding='UTF-8',errors='ignore') as f:
+        maintext_json = json.load(f)
+    json_file = read_maintext_json(maintext_json)    
+    paragraphs = json_file['paragraphs']
     
     whole_dict = {}
     for paragraph in paragraphs:
@@ -457,7 +457,8 @@ if __name__=='__main__':
         
     abbreviations_table = read_abbreviations_table(json_file)
     whole_dict.update(abbreviations_table)
+    json_file['abbreviations'] = whole_dict
     
     output_path = os.path.join(target_dir, os.path.basename(filepath).strip('json') + '_IAO' + '.json')
     with open(output_path,'w', encoding='UTF-8') as f:
-        json.dump(whole_dict,f,indent=1,ensure_ascii=False)
+        json.dump(json_file,f,indent=1,ensure_ascii=False)
