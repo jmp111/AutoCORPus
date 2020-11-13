@@ -23,11 +23,23 @@ def extract_text(soup,config):
         result: dict of the maintext 
     """
     result = {}
+    # Extract title
     try:
-        h1 = soup.find_all(config['title']['name'],config['title']['attrs'])[0].get_text().strip('\n')
+        h1 = soup.find(config['title']['name'],config['title']['attrs']).get_text().strip('\n')
     except:
         h1 = ''
     result['title'] = h1
+
+    # Extract abbreviations table
+    try:
+        abbreviations_table = soup.find(config['abbreviations_table']['name'],config['abbreviations_table']['attrs'])
+        abbreviations = {}
+        for tr in abbreviations_table.find_all('tr'):
+            short_form, long_form = [td.get_text() for td in tr.find_all('td')]
+            abbreviations[short_form] = long_form
+    except:
+        abbreviations = ''
+    result['abbreviations'] = abbreviations
 
     maintext = []
 #     sections = soup.find_all('p',attrs='p')

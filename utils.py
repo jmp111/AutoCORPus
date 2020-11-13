@@ -86,10 +86,8 @@ def read_mapping_file():
                         mapping_dict.update({IAO_term:[heading]})
     return mapping_dict
 
-def read_maintext_json(filepath):
+def read_maintext_json(json_file):
     mapping_dict = read_mapping_file()
-    with open(filepath,'r',encoding='UTF-8',errors='ignore') as maintext_json:
-        json_file=json.load(maintext_json)
     paragraphs = list(json_file.values())[1]
     for paragraph in paragraphs:
         section_heading = paragraph['section_heading']
@@ -120,3 +118,9 @@ def read_maintext_json(filepath):
             mapping_result = ''
         paragraph.update({'IAO_term':mapping_result})
     return json_file
+
+def read_abbreviations(json_file):
+    abbreviations = json_file['abbreviations']
+    if abbreviations=='':
+        return {}
+    return abbreviations
