@@ -24,18 +24,18 @@ if __name__ == "__main__":
         for config in config_list:
             config = os.path.join(config_dir,config)
             # extract table
-            target_path = os.path.join(target_dir,'tables',os.path.basename(config).strip('.json'))
+            target_path = os.path.join(target_dir,'tables',os.path.basename(config).replace('.json',''))
             command = "python ./extract_table.py -f " + file + " -t " + target_path + " -c " + config
             os.system(command)
 
             # extract maintext
-            target_path = os.path.join(target_dir,'maintext',os.path.basename(config).strip('.json'))
+            target_path = os.path.join(target_dir,'maintext',os.path.basename(config).replace('.json',''))
             command = "python ./extract_maintext.py -f " + file + " -t " + target_path + " -c " + config
             os.system(command)
 
             # extract abbreviations
-            maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).strip('.html') + '_maintext.json')
-            target_path = os.path.join(target_dir,'abbreviations',os.path.basename(config).strip('.json'))
+            maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).replace('.html','') + '_maintext.json')
+            target_path = os.path.join(target_dir,'abbreviations',os.path.basename(config).replace('.json',''))
             command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + target_path
             os.system(command)
     else:
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         command = "python ./extract_maintext.py -f " + file + " -t " + os.path.join(target_dir,'maintext') + " -c " + config
         os.system(command)
 
-        maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).strip('.html') + '_maintext.json')
+        maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).replace('.html','') + '_maintext.json')
         # extract abbreviations
         command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + os.path.join(target_dir,'abbreviations')
         os.system(command)

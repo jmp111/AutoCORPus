@@ -42,12 +42,10 @@ def extract_text(soup,config):
     result['abbreviations'] = abbreviations
 
     maintext = []
-#     sections = soup.find_all('p',attrs='p')
     sections = soup.find_all(config['body']['name'],config['body']['attrs'])
     for p in sections:
         paragraph = {}
         h2 = p.find_previous(config['heading']['name'],config['heading']['attrs'])
-#         h2 = p.parent.find_previous_sibling('h2','head')
         if h2:
             h2=h2.get_text().strip('\n')
         else:
@@ -61,9 +59,7 @@ def extract_text(soup,config):
         paragraph['subsection_heading'] = h2
         paragraph['body'] = p.get_text()
         maintext.append(paragraph)
-        # maintext.append([h2,h3,p.get_text()])
 
-    # result = {h1:maintext}    
     result['paragraphs'] = maintext
     return result
 
@@ -101,6 +97,6 @@ if __name__=='__main__':
     
     result = extract_text(soup,config)
 
-    basename = os.path.basename(filepath).strip('.html')
+    basename = os.path.basename(filepath).replace(".html",'')
     with open(os.path.join(target_dir,"{}_maintext.json".format(basename)), "w",encoding='UTF-8') as outfile: 
-        json.dump(result, outfile, ensure_ascii=False)
+        json.dump(result, outfile, indent=2, ensure_ascii=False)

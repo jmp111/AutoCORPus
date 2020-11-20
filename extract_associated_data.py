@@ -10,9 +10,13 @@ import openpyxl
 def check_superrow(row):
     """
     check if the current row is a superrow
-    ––––––––––––––––––––––––––––––––––––––––––––––––––
-    params: row, list object
-    return: bool
+
+    Args: 
+        row: python list 
+
+    Return:
+        True/False
+
     """
     if len(set([i for i in row if (str(i)!='')&(str(i)!='\n')&(str(i)!='None')]))==1:
         return True
@@ -21,13 +25,13 @@ def check_superrow(row):
 
 def get_superrows(t):
     """
-    determine if there exists a splittable pattern in the header cell
+    determine supperrows in a table
 
     Args:
         t: BeautifulSoup object of table
 
     Returns:
-        idx_list: a list of superrow index
+        idx_list: a list of superrow indices
 
     """
     idx_list = []
@@ -37,6 +41,22 @@ def get_superrows(t):
     return idx_list
 
 def table2json(table_2d, header_idx, subheader_idx, superrow_idx, table_num, caption, footer):
+    """
+    transform tables from nested lists to JSON 
+
+    Args:
+        table_2d: nested list tables
+        header_idx: list of header indices
+        subheader_idx: list of subheader indices
+        superrow_idx: list of superrow indices
+        table_num: table number
+        caption: table caption
+        footer: table footer
+
+    Returns:
+        tables: tables in JSON format
+
+    """
     tables = []
     sections = []
     cur_table = {}
@@ -82,6 +102,16 @@ def table2json(table_2d, header_idx, subheader_idx, superrow_idx, table_num, cap
 
 
 def xls_read(filepath):
+    """
+    read tables from xls file 
+
+    Args:
+        filepath: filepath of xls table file
+
+    Returns:
+        tables: nested list tables
+
+    """
     workbook = xlrd.open_workbook(filepath)
     tables = []
     # skip the last sheet
@@ -101,6 +131,16 @@ def xls_read(filepath):
     return tables
 
 def xlsx_read(filepath):
+    """
+    read tables from xlsx file 
+
+    Args:
+        filepath: filepath of xlsx table file
+
+    Returns:
+        tables: nested list tables
+
+    """
     tables = []
     workbook = openpyxl.load_workbook(filepath)
     for sheetname in workbook.sheetnames:
@@ -184,5 +224,5 @@ if __name__=='__main__':
     basename = os.path.abspath(associated_data_dir).split('/')[-1]
     filename = '{}_associated_data.json'.format(basename)
     with open(os.path.join(target_dir,filename),'w') as f:
-        json.dump(table_json,f,ensure_ascii=False)
+        json.dump(table_json, f, indent=2, ensure_ascii=False)
         

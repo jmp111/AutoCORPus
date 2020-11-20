@@ -14,14 +14,18 @@ pval_regex = r'((\d+.\d+)|(\d+))(\s{0,1})[*××xX](\s{0,1})10[_]{0,1}([–−-])
 pval_scientific_regex = r'((\d+.\d+)|(\d+))(\s{0,1})[eE](\s{0,1})([–−-])(\s{0,1})(\d+)'
 
 def table_to_2d(t,config):
-    # https://stackoverflow.com/questions/48393253/how-to-parse-table-with-rowspan-and-colspan
-    
-#     if t.find_all('thead')==[]:
-#         raise AttributeError('Table has no header rows')
-    
-#     if t.find_all('tbody')==[]:
-#         raise AttributeError("Table has no data rows")
+    """
+    transform tables from nested lists to JSON 
+
+    Args:
+        t: html table, beautiful soup object
+        config: configuration dictionary
         
+    Returns:
+        table: table in JSON format
+
+    """
+    # https://stackoverflow.com/questions/48393253/how-to-parse-table-with-rowspan-and-colspan
     rows = t.find_all('tr')
     # fill colspan and rowspan
     for row in rows:
@@ -49,8 +53,6 @@ def table_to_2d(t,config):
                 col_idx += 1
 
             # fill table data
-#             rowspan = rowspans[col_idx] = int(cell.attrs['rowspan']) or len(rows) - row_idx
-#             colspan = int(cell.attrs['colspan']) or n_cols - col_idx
             rowspan = rowspans[col_idx] = int(cell.attrs['rowspan'])
             colspan = int(cell.attrs['colspan'])
             # next column is offset by the colspan
@@ -61,7 +63,6 @@ def table_to_2d(t,config):
             if value.startswith('(') and value.endswith(')'):
                 value = value[1:-1]
             if re.match(pval_regex,value):
-#                 value = value.replace(' × 10_','e').replace('×10_','e').replace('−','-')
                 value = re.sub(r'(\s{0,1})[*××xX](\s{0,1})10(_{0,1})','e',value).replace('−','-')
             if re.match(pval_scientific_regex,value):
                 value = re.sub(r'(\s{0,1})[–−-](\s{0,1})','-',value)
@@ -80,9 +81,13 @@ def table_to_2d(t,config):
 def check_superrow(row):
     """
     check if the current row is a superrow
-    ––––––––––––––––––––––––––––––––––––––––––––––––––
-    params: row, list object
-    return: bool
+
+    Args: 
+        row: python list 
+
+    Return:
+        True/False
+
     """
     if len(set([i for i in row if (str(i)!='')&(str(i)!='\n')&(str(i)!='None')]))==1:
         return True
@@ -166,8 +171,6 @@ def split_format(pattern,s):
     Raises:
         KeyError: Raises an exception.
     """
-#     return pattern.split(s)[1:-1]
-#     return [i for i in pattern.split(s) if i not in ':|\/,;']
     return [i for i in re.split(r'[:|/,;]', s) if i not in ':|\/,;']
 
 def get_headers(t,config):
@@ -198,7 +201,7 @@ def get_headers(t,config):
 
 def get_superrows(t):
     """
-    determine if there exists a splittable pattern in the header cell
+    determine supperrows in a table
 
     Args:
         t: BeautifulSoup object of table
@@ -215,6 +218,16 @@ def get_superrows(t):
     return idx_list
 
 def is_number(s):
+    """
+    check if input string is a number
+
+    Args:
+        s: input string
+
+    Returns:
+        True/False
+
+    """
     try:
         float(s.replace(',',''))
         return True
@@ -222,17 +235,53 @@ def is_number(s):
         return False
 
 def is_mix(s):
+    """
+    check if input string is a mix of number and text
+
+    Args:
+        s: input string
+
+    Returns:
+        True/False
+
+    """
     if any(char.isdigit() for char in s):
         if any(char for char in s if char.isdigit()==False):
             return True
     return False
 
 def is_text(s):
+    """
+    check if input string is all text
+
+    Args:
+        s: input string
+
+    Returns:
+        True/False
+
+    """
     if any(char.isdigit() for char in s):
         return False
     return True
 
 def table2json(table_2d, header_idx, subheader_idx, superrow_idx, table_num, caption, footer):
+    """
+    transform tables from nested lists to JSON 
+
+    Args:
+        table_2d: nested list tables
+        header_idx: list of header indices
+        subheader_idx: list of subheader indices
+        superrow_idx: list of superrow indices
+        table_num: table number
+        caption: table caption
+        footer: table footer
+
+    Returns:
+        tables: tables in JSON format
+
+    """
     tables = []
     sections = []
     cur_table = {}
@@ -278,7 +327,7 @@ def table2json(table_2d, header_idx, subheader_idx, superrow_idx, table_num, cap
 
 
 def main(soup,config):
-    # # Preprocssing
+    # Preprocssing
     for e in soup.find_all(attrs={'style':['display:none','visibility:hidden']}):
         e.extract()
 
@@ -305,11 +354,10 @@ def main(soup,config):
     if soup_tables==[]:
         raise AttributeError('HTML does not contain any table')
     
-    # # One table
+    # One table
     tables = []
     for table_num, table in enumerate(soup_tables): 
-#         try:
-    # ## caption and footer
+    # caption and footer
         try:
             caption = table.find_previous(config['table_caption']['name'],config['table_caption']['attrs']).get_text()
         except:
@@ -327,10 +375,10 @@ def main(soup,config):
         
         header_idx = get_headers(table,config)
         
-        # ## span table to single-cells
+        # span table to single-cells
         table_2d = table_to_2d(table,config)
 
-        ## find superrows
+        # find superrows
         superrow_idx = []
         if table_2d!=None:
             for row_idx,row in enumerate(table_2d):
@@ -338,9 +386,8 @@ def main(soup,config):
                     if check_superrow(row):
                         superrow_idx.append(row_idx)
 
-        # ## identify section names in index column
+        # identify section names in index column
         if superrow_idx==[]:
-        # if (superrow_idx==[])&(table_2d[0][0]==''):
             first_col = [row[0] for row in table_2d]
             first_col_vals = [i for i in first_col if first_col.index(i) not in header_idx] 
             unique_vals = set([i for i in first_col_vals if i not in ['','None']])
@@ -359,7 +406,7 @@ def main(soup,config):
                 for row in table_2d:
                     row.pop(0)
 
-        ## Identify subheaders
+        # Identify subheaders
         value_idx = [i for i in range(len(table_2d)) if i not in header_idx+superrow_idx]
         col_type = []
         for col_idx in range(len(table_2d[0])):
@@ -405,7 +452,7 @@ def main(soup,config):
                 tmp=[j]
         subheader_idx.append(tmp)
 
-        # ## convert to float
+        # convert to float
         for row in table_2d:
             for cell in range(len(row)):
                 try:
@@ -414,7 +461,7 @@ def main(soup,config):
                     row[cell] = row[cell]
 
         cur_table = table2json(table_2d, header_idx, subheader_idx, superrow_idx, table_num, caption, footer)
-        # ## merge headers
+        # merge headers
         sep = '<!>'
         for table in cur_table:
             headers = table['columns']
@@ -441,7 +488,6 @@ if __name__ == "__main__":
 
     parser.add_argument('-t','--target_dir',type=str,help='Target directory of JSON output')
     parser.add_argument("-c", "--config", type=str, help="filepath for configuration JSON file")
-    # parser.add_argument('-c','--config',type=str,help='Configuration file for HTML format', default=False)
 
     args = parser.parse_args()
     filepath = args.filepath
@@ -473,16 +519,16 @@ if __name__ == "__main__":
 
     
     elif base_dir:
+        # read all table htmls in a directory
         print(1)
-        # soup = BeautifulSoup(text, 'html.parser')
-        # table_dict = main(soup)
     
     output = {}
     output['status'] = status
     output['error_message'] = error_message
     output.update(table_dict)
 
-    target_filepath = os.path.join(target_dir,'{}.json'.format(os.path.split(filepath)[1].strip('.html')))
+    basename = os.path.basename(filepath).replace('.html','')
+    target_filepath = os.path.join(target_dir,basename+'_tables.json')
     with open(target_filepath,'w',encoding='UTF-8') as f:
-        json.dump(output,f,ensure_ascii=False)
+        json.dump(output, f, indent=2, ensure_ascii=False)
     

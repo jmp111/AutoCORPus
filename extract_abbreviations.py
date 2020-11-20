@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os
-from utils import *
-import regex as re
-import argparse
-import json
-import logging
-import sys
-from collections import defaultdict, Counter
 """
 A Python 3 refactoring of Vincent Van Asch's Python 2 code at
 
@@ -21,6 +13,14 @@ A. Schwartz and M. Hearst
 Biocomputing, 2003, pp 451-462.
 
 """
+import os
+from utils import *
+import regex as re
+import argparse
+import json
+import logging
+import sys
+from collections import defaultdict, Counter
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -281,7 +281,7 @@ def extract_abbreviation_definition_pairs(file_path=None,
                                           doc_text=None,
                                           most_common_definition=False,
                                           first_definition=False,
-                                          all_definition=False):
+                                          all_definition=True):
     abbrev_map = dict()
     list_abbrev_map = defaultdict(list)
     counter_abbrev_map = dict()
@@ -446,19 +446,27 @@ if __name__=='__main__':
         
     with open(filepath,'r',encoding='UTF-8',errors='ignore') as f:
         maintext_json = json.load(f)
-    json_file = read_maintext_json(maintext_json)    
-    paragraphs = json_file['paragraphs']
-    
-    whole_dict = {}
+    maintext_json = read_maintext_json(maintext_json)
+    with open(filepath,'w', encoding='UTF-8') as f:
+        json.dump(maintext_json, f, indent=1, ensure_ascii=False)
+
+
+    paragraphs = maintext_json['paragraphs']
+    all_abbreviations = {}
     for paragraph in paragraphs:
         maintext = paragraph['body']
         pairs = extract_abbreviation(maintext)
-        whole_dict.update(pairs)
-        
-    abbreviations_table = read_abbreviations_table(json_file)
-    whole_dict.update(abbreviations_table)
-    json_file['abbreviations'] = whole_dict
+        all_abbreviations.update(pairs)
     
-    output_path = os.path.join(target_dir, os.path.basename(filepath).strip('json') + '_IAO' + '.json')
+    additional_abbreviations = all_abbreviations
+    author_provided_abbreviations = read_abbreviations_table(maintext_json)
+    all_abbreviations.update(author_provided_abbreviations)
+    
+    abbrev_json = {}
+    abbrev_json['author_provided_abbreviations'] = author_provided_abbreviations
+    abbrev_json['additional_abbreviations'] = additional_abbreviations
+    abbrev_json['all_abbreviations'] = all_abbreviations
+    
+    output_path = os.path.join(target_dir, os.path.basename(filepath).replace("_maintext.json",'') + '_abbreviations' + '.json')
     with open(output_path,'w', encoding='UTF-8') as f:
-        json.dump(json_file,f,indent=1,ensure_ascii=False)
+        json.dump(abbrev_json,f,indent=2,ensure_ascii=False)
