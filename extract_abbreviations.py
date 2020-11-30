@@ -463,7 +463,6 @@ if __name__=='__main__':
         h2 = paragraph['section_heading']
         if h2 in mapping_dict_with_DAG.keys():
             paragraph.update({'IAO_term':mapping_dict_with_DAG[h2]})
-    print (maintext_json)
     with open(filepath,'w', encoding='UTF-8') as f:
         json.dump(maintext_json, f, indent=1, ensure_ascii=False)
 
