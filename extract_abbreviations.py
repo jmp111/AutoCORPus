@@ -443,10 +443,27 @@ if __name__=='__main__':
             os.makedirs(target_dir)
         except:
             raise FileNotFoundError('Target filepath does not exist')
-        
+    
+    # assign heading by fuzzy match    
     with open(filepath,'r',encoding='UTF-8',errors='ignore') as f:
         maintext_json = json.load(f)
     maintext_json = read_maintext_json(maintext_json)
+
+    
+    # assign heading by DAG
+    paper = {}
+    paragraphs = maintext_json['paragraphs']
+    for paragraph in paragraphs:
+        h2 = paragraph['section_heading']
+        IAO_term = paragraph['IAO_term']
+        paper.update({h2:IAO_term})
+
+    mapping_dict_with_DAG = assgin_heading_by_DAG(paper)
+    for paragraph in paragraphs:
+        h2 = paragraph['section_heading']
+        if h2 in mapping_dict_with_DAG.keys():
+            paragraph.update({'IAO_term':mapping_dict_with_DAG[h2]})
+    print (maintext_json)
     with open(filepath,'w', encoding='UTF-8') as f:
         json.dump(maintext_json, f, indent=1, ensure_ascii=False)
 
