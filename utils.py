@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import json
 import nltk
 # import fuzz
+import networkx as nx
 from fuzzywuzzy import fuzz
 
 def get_files(base_dir,pattern=r'(.*).html'):
@@ -126,3 +127,57 @@ def read_abbreviations_table(json_file):
     if abbreviations=='':
         return {}
     return abbreviations
+
+def assgin_heading_by_DAG(paper):
+	G=nx.read_graphml('./DAG_model.graphml')
+	mapping_dict_with_DAG={}
+	for i,heading in enumerate(paper.keys()):
+		if paper[heading] == []:
+			previous_mapped_heading_found = False
+			i2 = 1
+			while not previous_mapped_heading_found:
+				if i - i2 >len(list(paper.keys())):
+					previous_mapped_heading_found = True
+					previous_section = "Start of the article"
+				else:
+					previous_heading = list(paper.keys())[i - i2]
+					if paper[previous_heading] != []:
+						previous_mapped_heading_found = True
+						previous_section = paper[previous_heading]
+					else:
+						i2 += 1
+			
+			next_mapped_heading_found = False
+			i2 = 1
+			while not next_mapped_heading_found:
+				if i + i2 >=len(list(paper.keys())):
+					next_mapped_heading_found = True
+					next_section = "End of the article"	
+				else:
+					next_heading = list(paper.keys())[i + i2]
+					if paper[next_heading] != []:
+						next_mapped_heading_found = True
+						next_section = paper[next_heading]
+					else:
+						i2 += 1
+			
+			if previous_section != "Start of the article" and next_section != "End of the article":
+				try:
+					paths = nx.all_shortest_paths(G, paper[previous_heading][-1], paper[next_heading][0],weight='cost')
+					for path in paths:
+						if len(path) <= 2:
+							mapping_dict_with_DAG.update({heading:[path[0]]})
+						if len(path) >2 :
+							mapping_dict_with_DAG.update({heading:path[1:-1]})
+				except:
+					new_target = paper[list(paper.keys())[i + i2 + 1]][0]
+					paths = nx.all_shortest_paths(G, paper[previous_heading][-1], new_target,weight='cost')
+					for path in paths:
+						if len(path) == 2:
+							mapping_dict_with_DAG.update({heading:[path[0]]})
+						if len(path) >2 :
+							mapping_dict_with_DAG.update({heading:path[1:-1]})
+					
+			if next_section == "End of the article":
+				mapping_dict_with_DAG.update({heading:[previous_section[-1]]})
+	return mapping_dict_with_DAG
