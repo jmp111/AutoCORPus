@@ -61,8 +61,7 @@ def process_em(soup):
 
 def read_mapping_file():
     mapping_dict = {}
-    # with open('D:\imperial college\project2\IAO_FINAL_MAPPING.txt','r',encoding='utf-8') as f: # CHANGE DIRECT
-    with open('./IAO_FINAL_MAPPING.txt','r',encoding='utf-8') as f: # CHANGE DIRECT
+    with open('./IAO_dicts/IAO_FINAL_MAPPING.txt','r',encoding='utf-8') as f:
         lines = f.readlines()
         for line in lines:
             heading = line.split('\t')[0].lower().strip('\n')
