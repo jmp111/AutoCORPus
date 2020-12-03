@@ -208,6 +208,7 @@ study population	participants section
 study population and methods	participants section / methods section
 study strengths and limitations	highlights section
 subjects and methods	methods section
+subjects  participants section
 summary	conclusion section
 summary and conclusion	conclusion section
 supplemental data	supplementary material section
