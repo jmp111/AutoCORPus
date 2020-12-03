@@ -88,9 +88,19 @@ def read_mapping_file():
                         mapping_dict.update({IAO_term:[heading]})
     return mapping_dict
 
+def read_IAO_term_to_ID_file():
+    IAO_term_to_no_dict={}
+    with open('./IAO_dicts/IAO_term_to_ID.txt','r') as f:
+        lines = f.readlines()
+        for line in lines:
+            IAO_term = line.split('\t')[0]
+            IAO_no = line.split('\t')[1].strip('\n')
+            IAO_term_to_no_dict.update({IAO_term:IAO_no})
+    return IAO_term_to_no_dict
+
 def read_maintext_json(json_file):
+    IAO_term_to_no_dict = read_IAO_term_to_ID_file()
     mapping_dict = read_mapping_file()
-    # paragraphs = list(json_file.values())[1]
     paragraphs = json_file['paragraphs']
     for paragraph in paragraphs:
         section_heading = paragraph['section_heading']
@@ -119,7 +129,16 @@ def read_maintext_json(json_file):
         else:
             h2=''
             mapping_result = ''
+        
+        mapping_result_ID_version = []    
+        for e in mapping_result:
+            if e in IAO_term_to_no_dict.keys():
+                mapping_result_ID_version.append(IAO_term_to_no_dict[e])
+            else:
+                mapping_result_ID_version.append(e)
+                
         paragraph.update({'IAO_term':mapping_result})
+        paragraph.update({'IAO_ID':mapping_result_ID_version})
     return json_file
 
 def read_abbreviations_table(json_file):
