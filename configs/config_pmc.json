@@ -16,8 +16,8 @@
     },
     "body":
     {
-        "name":"p",
-        "attrs":{"class":"p"}
+        "name":"div",
+        "attrs":{"class":"sec"}
     },
     "table":
     {
