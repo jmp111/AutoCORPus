@@ -22,7 +22,7 @@
     "table":
     {
         "name":"table",
-        "attrs":{"class":null}
+        "attrs":{"class":"scrollable"}
     },
     "table_caption":
     {

@@ -22,12 +22,12 @@
     "table":
     {
         "name":"table",
-        "attrs":{"class":"html-array_table"}
+        "attrs":{"class":null}
     },
     "table_caption":
     {
-        "name":"h3",
-        "attrs":{"class":null}
+        "name":"div",
+        "attrs":{"class":"table-caption"}
     },
     "table_footer":
     {
