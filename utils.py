@@ -127,17 +127,8 @@ def read_maintext_json(json_file):
                         mapping_result = []
         else:
             h2=''
-            mapping_result = ''
-        
-        mapping_result_ID_version = []    
-        for e in mapping_result:
-            if e in IAO_term_to_no_dict.keys():
-                mapping_result_ID_version.append(IAO_term_to_no_dict[e])
-            else:
-                mapping_result_ID_version.append(e)
-                
+            mapping_result = ''                
         paragraph.update({'IAO_term':mapping_result})
-        paragraph.update({'IAO_ID':mapping_result_ID_version})
     return json_file
 
 def read_abbreviations_table(json_file):
