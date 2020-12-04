@@ -463,6 +463,20 @@ if __name__=='__main__':
         h2 = paragraph['section_heading']
         if h2 in mapping_dict_with_DAG.keys():
             paragraph.update({'IAO_term':mapping_dict_with_DAG[h2]})
+            
+    # map IAO terms to IAO IDs       
+    IAO_term_to_no_dict = read_IAO_term_to_ID_file()
+    for paragraph in paragraphs:
+        mapping_result_ID_version = []
+        IAO_terms = paragraph['IAO_term']
+        if IAO_terms != '' and IAO_terms != []:
+            for IAO_term in IAO_terms:
+                if IAO_term in IAO_term_to_no_dict.keys():
+                    mapping_result_ID_version.append(IAO_term_to_no_dict[IAO_term])
+        else:
+            mapping_result_ID_version = ''
+        paragraph.update({'IAO_ID':mapping_result_ID_version})
+        
     with open(filepath,'w', encoding='UTF-8') as f:
         json.dump(maintext_json, f, indent=1, ensure_ascii=False)
 
