@@ -1,4 +1,4 @@
-# AutoSCOPyST
+# AutoCORPus: Automated and Consistent Outputs from Research Publications
 
 
 ## Getting Started
@@ -54,4 +54,4 @@ Configuration files are needed to adjust for many different formats from publish
     - For **"attrs"**, usually **"class"** attribute alone is enough to identify all headings. If the **"class"** is missing, **null** should be used. Note that the **id** attribute **"S1title"** is not used here, because other headings in the document will have different **id** value
     ![avatar](./Tutorial/heading_config.png)
 
-5. Repeat the same for other sections, until all elements in the page are correctly configured and can be found by AutoSCOPyST
+5. Repeat the same for other sections, until all elements in the page are correctly configured and can be found by AutoCORPus
