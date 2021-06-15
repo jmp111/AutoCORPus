@@ -28,6 +28,13 @@ if __name__ == "__main__":
             command = "python ./extract_table.py -f " + file + " -t " + target_path + " -c " + config
             os.system(command)
 
+            # extract table images
+            image = os.path.join(file, 'image')
+            if os.path.isdir(image):
+                target_path = os.path.join(target_dir,'table_image',os.path.basename(config).replace('.json',''))
+                command = "python ./extract_table_image.py -f " + image + " -t " + target_path + " -c " + config
+                os.system(command)
+
             # extract maintext
             target_path = os.path.join(target_dir,'maintext',os.path.basename(config).replace('.json',''))
             command = "python ./extract_maintext.py -f " + file + " -t " + target_path + " -c " + config
@@ -42,6 +49,12 @@ if __name__ == "__main__":
         # extract table
         command = "python ./extract_table.py -f " + file + " -t " + os.path.join(target_dir,'tables') + " -c " + config
         os.system(command)
+
+        # extract table images
+        image = os.path.join(file, 'image')
+        if os.path.isdir(image):
+            command = "python ./extract_table_image.py -f " + image + " -t " + os.path.join(target_dir,'table_image') + " -c " + config
+            os.system(command)
 
         # extract maintext
         command = "python ./extract_maintext.py -f " + file + " -t " + os.path.join(target_dir,'maintext') + " -c " + config
