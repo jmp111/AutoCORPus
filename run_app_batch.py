@@ -29,53 +29,53 @@ if __name__ == "__main__":
             for file in filelist:
                 # extract table
                 target_path = os.path.join(target_dir, 'tables', os.path.basename(config).replace('.json', ''))
-                command = "python ./extract_table.py -f " + file + " -t " + target_path + " -c " + config
+                command = "python ./extract_table.py -f \"" + file + "\" -t \"" + target_path + "\" -c \"" + config + "\""
                 os.system(command)
 
                 # extract table images
                 image = os.path.join(file, 'image')
                 if os.path.isdir(image):
                     target_path = os.path.join(target_dir, 'table_image', os.path.basename(config).replace('.json', ''))
-                    command = "python ./extract_table_image.py -f " + image + " -t " + target_path + " -c " + config
+                    command = "python ./extract_table_image.py -f \"" + image + "\" -t \"" + target_path + "\" -c \"" + config + "\""
                     os.system(command)
 
                 # extract maintext
                 target_path = os.path.join(target_dir, 'maintext', os.path.basename(config).replace('.json', ''))
-                command = "python ./extract_maintext.py -f " + file + " -t " + target_path + " -c " + config
+                command = "python ./extract_maintext.py -f \"" + file + "\" -t \"" + target_path + "\" -c \"" + config + "\""
                 os.system(command)
 
                 # extract abbreviations
                 maintext_json_path = os.path.join(target_dir, 'maintext',
                                                   os.path.basename(file).replace('.html', '') + '_maintext.json')
                 target_path = os.path.join(target_dir, 'abbreviations', os.path.basename(config).replace('.json', ''))
-                command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + target_path
+                command = "python ./extract_abbreviations.py -f \"" + maintext_json_path + "\" -t \"" + target_path + "\""
                 os.system(command)
 
 
     else:
         for file in filelist:
             # extract table
-            command = "python ./extract_table.py -f " + file + " -t " + os.path.join(target_dir,
-                                                                                     'tables') + " -c " + config
+            command = "python ./extract_table.py -f \"" + file + "\" -t \"" + os.path.join(target_dir,
+                                                                                     'tables') + "\" -c \"" + config + "\""
             os.system(command)
 
             # extract table images
             image = os.path.join(file, 'image')
             if os.path.isdir(image):
-                command = "python ./extract_table_image.py -f " + image + " -t " + os.path.join(target_dir,
-                                                                                                'table_image') + " -c " + config
+                command = "python ./extract_table_image.py -f \"" + image + "\" -t \"" + os.path.join(target_dir,
+                                                                                     'table_image') + "\" -c \"" + config + "\""
                 os.system(command)
 
             # extract maintext
-            command = "python ./extract_maintext.py -f " + file + " -t " + os.path.join(target_dir,
-                                                                                        'maintext') + " -c " + config
+            command = "python ./extract_maintext.py -f \"" + file + "\" -t \"" + os.path.join(target_dir,
+                                                                                     'maintext') + "\" -c \"" + config + "\""
             os.system(command)
 
             maintext_json_path = os.path.join(target_dir, 'maintext',
                                               os.path.basename(file).replace('.html', '') + '_maintext.json')
             # extract abbreviations
-            command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + os.path.join(target_dir,
-                                                                                                           'abbreviations')
+            command = "python ./extract_abbreviations.py -f \"" + file + "\" -t \"" + os.path.join(target_dir,
+                                                                                     'abbreviations') + "\""
             os.system(command)
 
     if associated_data:
@@ -84,6 +84,6 @@ if __name__ == "__main__":
             associated_data_dir = os.path.join(base_dir,
                                                os.path.basename(file).replace('.html', '') + '_associated_data')
             if os.path.isdir(associated_data_dir):
-                command = "python ./extract_associated_data.py -a " + associated_data_dir + " -t " + os.path.join(
-                    target_dir, 'associated_data')
+                command = "python ./extract_associated_data.py -a \"" + associated_data_dir + "\" -t \"" + os.path.join(
+                    target_dir, 'associated_data') + "\""
             os.system(command)
