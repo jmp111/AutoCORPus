@@ -360,10 +360,12 @@ def listToDict(lst):
 def abbre_table_to_dict(t):
     abbre_list=[]
     rows = t.findAll("tr")
+    print (rows)
     for i in rows:
         elements = i.findAll(['td', 'th'])
         vals = [j.get_text() for j in elements]
         abbre_list+=vals
+    print (abbre_list)
     abbre_dict=listToDict(abbre_list)
     return abbre_dict
 
@@ -488,8 +490,12 @@ if __name__=='__main__':
         pairs = extract_abbreviation(maintext)
         all_abbreviations.update(pairs)
     
-    additional_abbreviations = all_abbreviations
+    
+    additional_abbreviations = {}
     author_provided_abbreviations = read_abbreviations_table(maintext_json)
+    for SF, LF in all_abbreviations.items():
+        if SF not in author_provided_abbreviations.keys():
+                additional_abbreviations.update({SF:LF})
     all_abbreviations.update(author_provided_abbreviations)
     
     abbrev_json = {}
