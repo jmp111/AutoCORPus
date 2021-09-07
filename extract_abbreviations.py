@@ -360,12 +360,11 @@ def listToDict(lst):
 def abbre_table_to_dict(t):
     abbre_list=[]
     rows = t.findAll("tr")
-    print (rows)
     for i in rows:
         elements = i.findAll(['td', 'th'])
         vals = [j.get_text() for j in elements]
-        abbre_list+=vals
-    print (abbre_list)
+        if len(vals)>1:
+            abbre_list+=vals
     abbre_dict=listToDict(abbre_list)
     return abbre_dict
 
@@ -385,6 +384,7 @@ def get_abbre_plain_text(soup_og):
     return abbre_list,list_lenth
 
 def get_abbre_dict_given_by_author(soup_og):
+
     header = soup_og.find_all('h2',recursive=True)
     abbre_dict={}
     for number, element in enumerate(header):
@@ -434,18 +434,24 @@ def extract_abbreviation(main_text):
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--filepath", type=str, help="filepath of of html file to be processed")
+    parser.add_argument("-fh", "--htmlfilepath", type=str, help="filepath of of html file to be processed")
     parser.add_argument("-t", "--target_dir", type=str, help="target directory for output")
     
     args = parser.parse_args()
     filepath = args.filepath
-    target_dir = args.target_dir
+    htmlfilepath = args.htmlfilepath
 
+    target_dir = args.target_dir
     if not os.path.isdir(target_dir):
         try: 
             os.makedirs(target_dir)
         except:
             raise FileNotFoundError('Target filepath does not exist')
-    
+    # read original soup
+    with open(htmlfilepath, 'r', encoding='UTF-8') as f:
+        text = f.read()
+    soup_og = BeautifulSoup(text, 'html.parser')
+
     # assign heading by fuzzy match    
     with open(filepath,'r',encoding='UTF-8',errors='ignore') as f:
         maintext_json = json.load(f)
@@ -492,7 +498,8 @@ if __name__=='__main__':
     
     
     additional_abbreviations = {}
-    author_provided_abbreviations = read_abbreviations_table(maintext_json)
+
+    author_provided_abbreviations = get_abbre_dict_given_by_author(soup_og)
     for SF, LF in all_abbreviations.items():
         if SF not in author_provided_abbreviations.keys():
                 additional_abbreviations.update({SF:LF})

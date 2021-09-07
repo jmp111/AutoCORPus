@@ -169,6 +169,7 @@ if __name__ == '__main__':
     process_supsub(soup)
     process_em(soup)
 
+
     result = extract_text(soup, config)
 
     # result = clean_text(result)

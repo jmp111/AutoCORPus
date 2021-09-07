@@ -40,10 +40,11 @@ if __name__ == "__main__":
             command = "python ./extract_maintext.py -f " + file + " -t " + target_path + " -c " + config
             os.system(command)
 
+            
             # extract abbreviations
             maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).replace('.html','') + '_maintext.json')
             target_path = os.path.join(target_dir,'abbreviations',os.path.basename(config).replace('.json',''))
-            command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + target_path
+            command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + target_path + " -fh " + file
             os.system(command)
     else:
         # extract table
@@ -60,9 +61,10 @@ if __name__ == "__main__":
         command = "python ./extract_maintext.py -f " + file + " -t " + os.path.join(target_dir,'maintext') + " -c " + config
         os.system(command)
 
-        maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).replace('.html','') + '_maintext.json')
         # extract abbreviations
-        command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + os.path.join(target_dir,'abbreviations')
+        maintext_json_path = os.path.join(target_dir, 'maintext', os.path.basename(file).replace('.html','') + '_maintext.json')
+        target_path = os.path.join(target_dir,'abbreviations',os.path.basename(config).replace('.json',''))
+        command = "python ./extract_abbreviations.py -f " + maintext_json_path + " -t " + target_path + " -fh " + file
         os.system(command)
 
     if associated_data:
