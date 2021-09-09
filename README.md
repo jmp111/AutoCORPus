@@ -55,3 +55,10 @@ Configuration files are needed to adjust for many different formats from publish
     ![avatar](./Tutorial/heading_config.png)
 
 5. Repeat the same for other sections, until all elements in the page are correctly configured and can be found by AutoCORPus
+
+### Tabel image processing
+If there is an `image` folder under the target directory, by running `run_app.py` for a single file or `run_app_batch.py` for multiple files, the package can read table images that are in the folder and output structured json files.
+    ![avatar](./Tutorial/table_image_processing_example.png)   
+The example above shows (part of) a generated JSON file on the right to display its structure, with corresponding compositions indicated by matching colours in the original table image on the left.
+
+Supported image formats include: **JPEG, JPG, PNG, TIFF**. Others have not been tested, but may aso can be processed.
